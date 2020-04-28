@@ -2,13 +2,29 @@ from django.shortcuts import render
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    cateId = 1
+    context = {
+        'cateId': cateId
+    }
+    return render(request, 'index.html', context=context)
 
 def workerList(request):
-    return render(request, 'workerList.html')
+    cateId = 2
+    context = {
+        'cateId': cateId
+    }
+    return render(request, 'workerList.html', context=context)
 
 def calculation(request):
-    return render(request, 'calculation.html')
+    cateId = 3
+    context = {
+        'cateId': cateId
+    }
+    return render(request, 'calculation.html', context=context)
 
 def aboutUs(request):
-    return render(request, 'aboutUs.html')
+    cateId = 4
+    context = {
+        'cateId': cateId
+    }
+    return render(request, 'aboutUs.html', context=context)
