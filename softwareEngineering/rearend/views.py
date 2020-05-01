@@ -22,6 +22,13 @@ def calculation(request):
     }
     return render(request, 'calculation.html', context=context)
 
+def hand_calculation(request):
+    cateId = 3
+    context = {
+        'cateId': cateId
+    }
+    return render(request, 'calculation.html', context=context)
+
 def aboutUs(request):
     cateId = 4
     context = {
