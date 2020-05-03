@@ -35,3 +35,6 @@ def aboutUs(request):
         'cateId': cateId
     }
     return render(request, 'aboutUs.html', context=context)
+
+def login(request):
+    return render(request, 'login.html')
