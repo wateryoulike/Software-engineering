@@ -208,7 +208,7 @@
                                                 <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="/static/images/icon/me.jpg">
                                             </a>
                                             <div class="media-body">
-                                                <h2 class="text-light display-6">Jim Doe</h2>
+                                                <h2 class="text-light display-6" id="engineer_name">Jim Doe</h2>
                                                 <p>资深工程师</p>
                                             </div>
                                         </div>
@@ -221,7 +221,7 @@
                                                     <label for="text-input" class=" form-control-label">编号：</label>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input type="text" id="number" name="text-input" class="form-control">
+                                                    <input  value="" type="text" id="number" name="text-input" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-6 row">
@@ -241,9 +241,9 @@
                                                 </div>
                                                 <div class="col-7">
                                                     <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                                        <select id="sex" name="time_length" class="js-select2 au-select-dark">
-                                                            <option value="1">男</option>
+                                                        <select id="sex" name="id" class="js-select2 au-select-dark">
                                                             <option value="0">女</option>
+                                                            <option value="1">男</option>
                                                         </select>
                                                         <div class="dropDownSelect2"></div>
                                                     </div>
@@ -254,7 +254,7 @@
                                                     <label for="text-input" class=" form-control-label">出生日期：</label>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input name="birth_date" id="date_choose" type="date" value="1987-12-04"/>
+                                                    <input name="birth_date" id="birth_date" type="date" value="1987-12-04"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -376,8 +376,24 @@
                     //请求成功
                     success : function(result) {
                         console.log(result);
-                        var status = result['loginOutStatus'];
-
+                        var datas = result['datas'];
+                        var sex = datas['sex'];
+                        var education = datas['education'] - 1;
+                        console.log(sex + education);
+                        console.log(datas);
+                        $('#name').val(datas['name']);
+                        $('#number').val(datas['number']);
+                        console.log("238102384190849238094" + "|| " + sex);
+                        console.log($('#sex').children('option').eq(sex));
+                        $('#sex').children('option').eq(sex).prop("selected", true);
+                        $('#birth_date').val(datas['birth_date']);
+                        $('#engineer_name').html(datas['name']);
+                        $('#education').children('option').eq(education).prop("selected", true);
+                        {#$('#education').prop(datas['education'],true);#}
+                        $('#hometown').val(datas['hometown']);
+                        $('#address').val(datas['address']);
+                        $('#telphone').val(datas['telphone']);
+                        $('#basic_wage').val(datas['basic_wage']);
                     },
                     //请求失败，包含具体的错误信息
                     error : function(e){

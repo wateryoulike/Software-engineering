@@ -31,11 +31,17 @@ def calculation(request):
     return render(request, 'calculation.html', context=context)
 
 def engineer_detail(request):
-    cateId = 3
-    context = {
-        'cateId': cateId
-    }
-    return render(request, 'calculation.html', context=context)
+    if request.is_ajax():
+        data = json.loads(request.body)
+        id = int(data['id'])
+        datas = Engineer.objects.filter(id=id).values()[0]
+        datas['birth_date'] = datas['birth_date'].strftime("%Y-%m-%d")
+        print(id, datas)
+        context = {
+            'datas': datas,
+        }
+        return JsonResponse(context, safe=False)
+
 
 def hand_calculation(request):
     cateId = 3
