@@ -26,4 +26,9 @@ urlpatterns = [
     path('login/', views.login),
     path('handLogin', views.handLogin),
     path('engineer_detail', views.engineer_detail),
+    path('update_message', views.update_message),
+    path('delete_message', views.delete_message),
+    path('add_message', views.add_message),
+    path('select_message', views.select_message),
+    path('sort', views.sort),
 ]

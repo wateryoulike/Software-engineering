@@ -3,6 +3,7 @@
 {% block custom_css %}
 
     <!-- Fontfaces CSS-->
+    <link href="/static/css/myPagination.css" rel="stylesheet" media="all">
 
 {% endblock custom_css %}
 
@@ -33,45 +34,64 @@
                                     <i class="zmdi zmdi-account-calendar"></i>
                                     工程师信息表
                                 </h2>
-                                <div class="filters m-b-45">
-                                    <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                        <select class="js-select2 au-select-dark" id="p_change">
-                                            <option value="0" {% if conditions.p_change == 0 %}selected="selected"{% endif %}>性别</option>
-                                            <option value="1" {% if conditions.p_change == 1 %}selected="selected"{% endif %}>男</option>
-                                            <option value="2" {% if conditions.p_change == 2 %}selected="selected"{% endif %}>女</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
-                                    </div>
-                                    <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                        <select class="js-select2 au-select-dark" id="price_change">
-                                            <option value="0" {% if conditions.price_change == 0 %}selected="selected"{% endif %}>学历</option>
-                                            <option value="1" {% if conditions.price_change == 1 %}selected="selected"{% endif %}>高中</option>
-                                            <option value="2" {% if conditions.price_change == 2 %}selected="selected"{% endif %}>学士</option>
-                                            <option value="2" {% if conditions.price_change == 2 %}selected="selected"{% endif %}>硕士</option>
-                                            <option value="2" {% if conditions.price_change == 2 %}selected="selected"{% endif %}>博士</option>
-                                            <option value="2" {% if conditions.price_change == 2 %}selected="selected"{% endif %}>其他</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
-                                    </div>
+                                <div class="filters m-b-45 table-data__tool">
+                                    <form action="/sort" method="post">
+                                        <div class="table-data__tool-left">
+                                        {% if searchResult == 0 %}
+                                            <h3 class="title-3 ">搜索含有字段 &nbsp;&nbsp;'<span style="color: red; font-size: 110%">{{ searchContent }}</span>'&nbsp;&nbsp; 的工程师名字或者编号结果为</h3>
+                                        {% else %}
+                                            <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                                <select name="sex_sort" class="js-select2 au-select-dark" id="p_change">
+                                                    <option disabled value="-1" {% if sort.sex_sort == -1 %}selected="selected"{% endif %}>性别</option>
+                                                    <option value="1" {% if sort.sex_sort == 1 %}selected="selected"{% endif %}>男</option>
+                                                    <option value="0" {% if sort.sex_sort == 0 %}selected="selected"{% endif %}>女</option>
+                                                    <option value="-2" {% if sort.sex_sort == -2 %}selected="selected"{% endif %}>无</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                            <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                                <select name="education_sort" class="js-select2 au-select-dark" id="price_change">
+                                                    <option disabled value="-1" {% if sort.education_sort == -1 %}selected="selected"{% endif %}>学历</option>
+                                                    <option value="1" {% if sort.education_sort == 1 %}selected="selected"{% endif %}>高中</option>
+                                                    <option value="2" {% if sort.education_sort == 2 %}selected="selected"{% endif %}>学士</option>
+                                                    <option value="3" {% if sort.education_sort == 3 %}selected="selected"{% endif %}>硕士</option>
+                                                    <option value="4" {% if sort.education_sort == 4 %}selected="selected"{% endif %}>博士</option>
+                                                    <option value="5" {% if sort.education_sort == 5 %}selected="selected"{% endif %}>其他</option>
+                                                    <option value="-2" {% if sort.education_sort == -2 %}selected="selected"{% endif %}>无</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
 
-                                    <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                        <select class="js-select2 au-select-dark" id="price_change">
-                                            <option value="0" {% if conditions.price_change == 0 %}selected="selected"{% endif %}>基本工资</option>
-                                            <option value="1" {% if conditions.price_change == 1 %}selected="selected"{% endif %}>从高到低</option>
-                                            <option value="2" {% if conditions.price_change == 2 %}selected="selected"{% endif %}>从低到高</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
-                                    </div>
-                                    <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                        <select class="js-select2 au-select-dark" id="price_change">
-                                            <option value="0" {% if conditions.price_change == 0 %}selected="selected"{% endif %}>工龄</option>
-                                            <option value="1" {% if conditions.price_change == 1 %}selected="selected"{% endif %}>从高到低</option>
-                                            <option value="2" {% if conditions.price_change == 2 %}selected="selected"{% endif %}>从低到高</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
-                                    </div>
+                                            <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                                <select name="basic_wage_sort" class="js-select2 au-select-dark" id="price_change">
+                                                    <option disabled value="-1" {% if sort.basic_wage_sort == -1 %}selected="selected"{% endif %}>基本工资</option>
+                                                    <option value="0" {% if sort.basic_wage_sort == 0 %}selected="selected"{% endif %}>从高到低</option>
+                                                    <option value="1" {% if sort.basic_wage_sort == 1 %}selected="selected"{% endif %}>从低到高</option>
+                                                    <option value="-2" {% if sort.basic_wage_sort == -2 %}selected="selected"{% endif %}>无</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
+                                            <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                                <select name="seniority_sort" class="js-select2 au-select-dark" id="price_change">
+                                                    <option disabled value="-1" {% if sort.seniority_sort == -1 %}selected="selected"{% endif %}>工龄</option>
+                                                    <option value="0" {% if sort.seniority_sort == 0 %}selected="selected"{% endif %}>从高到低</option>
+                                                    <option value="1" {% if sort.seniority_sort == 1 %}selected="selected"{% endif %}>从低到高</option>
+                                                    <option value="-2" {% if sort.seniority_sort == -2 %}selected="selected"{% endif %}>无</option>
+                                                </select>
+                                                <div class="dropDownSelect2"></div>
+                                            </div>
 
-	                                <a id="condition_submit" class="btn btn-primary" href="#" role="button">筛选</a>
+                                            <button type="submit" class="btn btn-primary" role="button">筛选</button>
+                                        {% endif %}
+
+                                        </div>
+                                    </form>
+
+
+                                    <div class="table-data__tool-right">
+                                        <button id="add_message" class="au-btn au-btn-icon au-btn--green au-btn--small" style="margin-right: 1.5rem;" data-toggle="modal" data-target="#staticAdd">
+                                            <i class="zmdi zmdi-plus"></i>增加数据</button>
+                                    </div>
 
                                 </div>
                                 <div class="table-responsive table-data" style="overflow-y: visible; height: auto">
@@ -84,9 +104,9 @@
                                                 <td style="font-size: 110%">性别</td>
                                                 <td style="font-size: 110%">出生日期</td>
                                                 <td style="font-size: 110%">学历</td>
-                                                <td style="font-size: 110%">工龄</td>
+                                                <td style="font-size: 110%">籍贯</td>
                                                 <td style="font-size: 110%">基本工资</td>
-                                                <td style="font-size: 110%">详细数据</td>
+                                                <td style="font-size: 110%">工龄</td>
                                                 <td style="font-size: 110%">更多操作</td>
                                             </tr>
                                         </thead>
@@ -121,7 +141,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="table-data__info">
-                                                        <h6>{% if data.education == 0 %}高中{% elif data.education == 1 %}学士{% elif data.education == 2 %}硕士{% elif data.education == 3 %}博士{% else %}其他{% endif %}</h6>
+                                                        <h6>{% if data.education == 1 %}高中{% elif data.education == 2 %}学士{% elif data.education == 3 %}硕士{% elif data.education == 4 %}博士{% else %}其他{% endif %}</h6>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -136,9 +156,9 @@
                                                 </td>
 
                                                 <td>
-                                                    <span id="more" class="more" data-toggle="tooltip" data-placement="top" title="" data-original-title="工程师{{ data.name }}数据详情">
-                                                        <i class="zmdi zmdi-more"></i>
-                                                    </span>
+                                                    <div class="table-data__info">
+                                                        <h6>{{ data.seniority }}年</h6>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="table-data__info">
@@ -155,8 +175,13 @@
                                         {% endfor %}
                                         </tbody>
                                     </table>
+                                    <input type="hidden" value="{{ is_sort }}" id="is_sort">
+                                    <input type="hidden" value="{{ now_page }}" id="now_page">
+                                {% if searchResult == 0 %}
+                                {% else %}
                                     <input type="hidden" id="num" value="{{ num }}">
                                     <div id="pagination" class="pagination"></div>
+                                {% endif %}
                                 </div>
                             </div>
                             <!-- END USER DATA-->
@@ -182,10 +207,13 @@
 								你是否真的要删除？
 							</p>
 						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-							<button type="button" class="btn btn-primary">确定</button>
-						</div>
+                        <form action="/delete_message" method="post">
+                            <div class="modal-footer">
+                                <input id="delete_id" type="hidden" name="delete_id" value="">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary">确定</button>
+                            </div>
+                        </form>
 					</div>
 				</div>
 			</div>
@@ -193,35 +221,182 @@
             <div class="modal fade" id="staticEdit" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" style="display: none;" aria-hidden="true">
 				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="largeModalLabel">信息修改</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<aside class="profile-nav alt">
-                                <section class="card">
-                                    <div class="card-header user-header alt bg-dark">
-                                        <div class="media">
-                                            <a href="#">
-                                                <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="/static/images/icon/me.jpg">
-                                            </a>
-                                            <div class="media-body">
-                                                <h2 class="text-light display-6" id="engineer_name">Jim Doe</h2>
-                                                <p>资深工程师</p>
+                        <form method="post" action="/update_message">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="largeModalLabel">信息修改</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <aside class="profile-nav alt">
+                                    <section class="card">
+                                        <div class="card-header user-header alt bg-dark">
+                                            <div class="media">
+                                                <a href="#">
+                                                    <img id="man_img" class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="/static/images/icon/me.jpg">
+                                                </a>
+                                                <div class="media-body">
+                                                    <h2 class="text-light display-6" id="engineer_name">Jim Doe</h2>
+                                                    <p>资深工程师</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="card-body">
+                                            <input type="hidden" id="ID" name="ID" value="">
+                                            <div class="row form-group">
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">编号：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <input  value="" type="text" id="number" name="number" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">姓名：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <input type="text" id="name" name="name" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">性别：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                                            <select id="sex" name="sex" class="js-select2 au-select-dark">
+                                                                <option value="0">女</option>
+                                                                <option value="1">男</option>
+                                                            </select>
+                                                            <div class="dropDownSelect2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">出生日期：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <input name="birth_date" id="birth_date" type="date" value="1987-12-04"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">学历：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                                            <select id="education" name="education" class="js-select2 au-select-dark">
+                                                                <option value="1">高中</option>
+                                                                <option value="2">学士</option>
+                                                                <option value="3">硕士</option>
+                                                                <option value="4">博士</option>
+                                                                <option value="5">其他</option>
+                                                            </select>
+                                                            <div class="dropDownSelect2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">籍贯：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <input type="text" id="hometown" name="hometown" value="嘉兴" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">居住地址：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                       <input type="text" id="address" name="address" value="嘉兴" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">电话号码：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <input type="text" id="telphone" name="telphone" value="15455656454" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">工龄：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                       <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                                            <select id="seniority" name="seniority" class="js-select2 au-select-dark">
+                                                                {% for i in all_years%}
+                                                                <option value="{{ i }}">{{i}}年</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <div class="dropDownSelect2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 row">
+                                                    <div class="col-4">
+                                                        <label for="text-input" class=" form-control-label">基本薪水：</label>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <input type="text" id="basic_wage" name="basic_wage" value="15455" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </section>
+                                </aside>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-primary">确定修改</button>
+                            </div>
+                        </form>
+					</div>
+				</div>
+			</div>
+
+            <div class="modal fade" id="staticAdd" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <form method="post" action="/add_message">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="largeModalLabel">增加工程师信息</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <aside class="profile-nav alt">
+                                <section class="card">
+                                    <img class="card-img-top" src="/static/images/icon/add1.png" alt="Card image cap">
                                     <div class="card-body">
-                                        <input type="hidden" id="ID" value="">
                                         <div class="row form-group">
                                             <div class="col-6 row">
                                                 <div class="col-4">
                                                     <label for="text-input" class=" form-control-label">编号：</label>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input  value="" type="text" id="number" name="text-input" class="form-control">
+                                                    <input  value="" type="text" name="number" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-6 row">
@@ -229,7 +404,7 @@
                                                     <label for="text-input" class=" form-control-label">姓名：</label>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input type="text" id="name" name="text-input" class="form-control">
+                                                    <input type="text" name="name" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
@@ -241,7 +416,7 @@
                                                 </div>
                                                 <div class="col-7">
                                                     <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                                        <select id="sex" name="id" class="js-select2 au-select-dark">
+                                                        <select name="sex" class="js-select2 au-select-dark">
                                                             <option value="0">女</option>
                                                             <option value="1">男</option>
                                                         </select>
@@ -254,7 +429,7 @@
                                                     <label for="text-input" class=" form-control-label">出生日期：</label>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input name="birth_date" id="birth_date" type="date" value="1987-12-04"/>
+                                                    <input name="birth_date" type="date" value="2007-01-01"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -266,7 +441,7 @@
                                                 </div>
                                                 <div class="col-7">
                                                     <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                                        <select id="education" name="time_length" class="js-select2 au-select-dark">
+                                                        <select name="education" class="js-select2 au-select-dark">
                                                             <option value="1">高中</option>
                                                             <option value="2">学士</option>
                                                             <option value="3">硕士</option>
@@ -282,7 +457,7 @@
                                                     <label for="text-input" class=" form-control-label">籍贯：</label>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input type="text" id="hometown" name="text-input" value="嘉兴" class="form-control">
+                                                    <input type="text" name="hometown" value="" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
@@ -293,7 +468,7 @@
                                                     <label for="text-input" class=" form-control-label">居住地址：</label>
                                                 </div>
                                                 <div class="col-7">
-                                                   <input type="text" id="address" name="text-input" value="嘉兴" class="form-control">
+                                                   <input type="text" name="address" value="" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-6 row">
@@ -301,7 +476,7 @@
                                                     <label for="text-input" class=" form-control-label">电话号码：</label>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input type="text" id="telphone" name="text-input" value="15455656454" class="form-control">
+                                                    <input type="text" name="telphone" value="" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
@@ -313,12 +488,10 @@
                                                 </div>
                                                 <div class="col-7">
                                                    <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                                        <select id="seniority" name="time_length" class="js-select2 au-select-dark">
-                                                            <option value="1">1年</option>
-                                                            <option value="2">2年</option>
-                                                            <option value="3">3年</option>
-                                                            <option value="4">4年</option>
-                                                            <option value="5">5年</option>
+                                                        <select name="seniority" class="js-select2 au-select-dark">
+                                                            {% for i in all_years%}
+                                                            <option value="{{ i }}">{{i}}年</option>
+                                                            {% endfor %}
                                                         </select>
                                                         <div class="dropDownSelect2"></div>
                                                     </div>
@@ -329,24 +502,24 @@
                                                     <label for="text-input" class=" form-control-label">基本薪水：</label>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input type="text" id="basic_wage" name="text-input" value="15455" class="form-control">
+                                                    <input type="text" name="basic_wage" value="" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
 
                                     </div>
 
-
                                 </section>
                             </aside>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-							<button type="button" class="btn btn-primary">确定修改</button>
-						</div>
-					</div>
-				</div>
-			</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-primary">确定增加</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         </div>
 
@@ -354,13 +527,17 @@
 {% endblock content %}
 
 {% block cutsom_js %}
+    <script src="/static/js/myPagination.js"></script>
     <script>
+    //修改
         $('#content tr td:last-child').each(function () {
             console.log($(this).children('div').children('button[name="edit"]'));
             $(this).children('div').children('button[name="edit"]').bind('click', function () {
                 console.log('hello');
                 console.log($(this).parent().children('input').val());
                 var ID = $(this).parent().children('input').val();
+                $('#ID').val(ID);
+                console.log($(this).parent().children('input'));
                 var list = {
                     'id': ID
                 };
@@ -379,6 +556,7 @@
                         var datas = result['datas'];
                         var sex = datas['sex'];
                         var education = datas['education'] - 1;
+                        var seniority = datas['seniority'] - 1;
                         console.log(sex + education);
                         console.log(datas);
                         $('#name').val(datas['name']);
@@ -386,10 +564,21 @@
                         console.log("238102384190849238094" + "|| " + sex);
                         console.log($('#sex').children('option').eq(sex));
                         $('#sex').children('option').eq(sex).prop("selected", true);
+                        var sex_text = $('#sex').children('option').eq(sex).html();
+                        $('#select2-sex-container').html(sex_text);
                         $('#birth_date').val(datas['birth_date']);
                         $('#engineer_name').html(datas['name']);
                         $('#education').children('option').eq(education).prop("selected", true);
-                        {#$('#education').prop(datas['education'],true);#}
+                        var education_text = $('#education').children('option').eq(education).html();
+                        $('#select2-education-container').html(education_text);
+
+                        $('#seniority').children('option').eq(seniority).prop("selected", true);
+                        var seniority_text = $('#seniority').children('option').eq(seniority).html();
+                        $('#select2-seniority-container').html(seniority_text);
+
+                        $('#man_img').attr('src', datas['img']);
+                        console.log($('#man_img').attr('src'), datas['man_img']);
+
                         $('#hometown').val(datas['hometown']);
                         $('#address').val(datas['address']);
                         $('#telphone').val(datas['telphone']);
@@ -403,5 +592,34 @@
                 });
             })
         })
+
+        //删除
+        $('#content tr td:last-child').each(function () {
+            console.log($(this).children('div').children('button[name="delete"]'));
+            $(this).children('div').children('button[name="delete"]').bind('click', function () {
+                console.log('hello');
+                console.log($(this).parent().children('input').val());
+                var ID = $(this).parent().children('input').val();
+                $('#delete_id').val(ID);
+            })
+        });
+
+        var num = $('#num').val();
+	    console.log(num);
+	    var now_page = $('#now_page').val();
+	    new myPagination({
+	        id: 'pagination',
+	        curPage: now_page, //初始页码
+	        pageTotal: Math.ceil(num/8), //总页数
+			pageAmount: 8,  //每页多少条
+	        dataTotal: num, //总共多少条数据
+			pageSize: 5, //可选,分页个数
+	        showPageTotalFlag:true, //是否显示数据统计
+	        showSkipInputFlag:false, //是否支持跳转
+	        getPage: function (page) {
+	            //获取当前页数
+	            console.log(page);
+	        }
+	    });
     </script>
 {% endblock cutsom_js %}
