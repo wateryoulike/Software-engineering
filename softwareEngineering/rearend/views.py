@@ -91,6 +91,10 @@ def sort(request):
 
     for key, data in enumerate(datas):
         datas[key]['birth_date'] = datas[key]['birth_date'].strftime("%Y-%m-%d")
+        datas[key]['all_wage'] = round((data['basic_wage'] + 10 * 25 + data['seniority'] * 800) * 0.9 - 500, 1)
+
+    for data in datas:
+        print(data)
     all_years = list(range(1, 51))
 
     sort = {
@@ -153,6 +157,7 @@ def sort_other(request):
 
     for key, data in enumerate(datas):
         datas[key]['birth_date'] = datas[key]['birth_date'].strftime("%Y-%m-%d")
+        datas[key]['all_wage'] = round((data['basic_wage'] + 10 * 25 + data['seniority'] * 800) * 0.9 - 500, 1)
     all_years = list(range(1, 51))
 
     sort = {
@@ -180,6 +185,7 @@ def workerList(request):
     datas = datas[(now_page-1) * 8: now_page * 8]
     for key, data in enumerate(datas):
         datas[key]['birth_date'] = datas[key]['birth_date'].strftime("%Y-%m-%d")
+        datas[key]['all_wage'] = round((data['basic_wage'] + 10 * 25 + data['seniority'] * 800) * 0.9 - 500, 1)
     all_years = list(range(1, 51))
     print(all_years)
 
