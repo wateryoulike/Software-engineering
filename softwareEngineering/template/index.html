@@ -24,11 +24,17 @@
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
+                <input type="hidden" id="boy_num" value="{{ sex_pie.boy }}">
+                <input type="hidden" id="girl_num" value="{{ sex_pie.girl }}">
+                <input type="hidden" id="work_pro_5" value="{{ work_pie.work_pro_5 }}">
+                <input type="hidden" id="work_pro_10" value="{{ work_pie.work_pro_10 }}">
+                <input type="hidden" id="work_pro_15" value="{{ work_pie.work_pro_15 }}">
+
                 <div class="section__content section__content--p30">
 	                <div class="row">
                         <div class="col-md-12">
                             <div class="overview-wrap">
-                                <h2 class="title-1">虚拟股票管理</h2>
+                                <h2 class="title-1">工程师数据管理统计图</h2>
                             </div>
                         </div>
                     </div>
@@ -41,8 +47,8 @@
                                             <i class="fa fa-signal"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>551</h2>
-                                            <span>股票总数</span>
+                                            <h2> {{ all_num }} </h2>
+                                            <span>工程师总数</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -59,8 +65,8 @@
                                             <i class="zmdi zmdi-shopping-cart"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>323,222</h2>
-                                            <span>交易成交总量</span>
+                                            <h2> {{ basic_wage }} </h2>
+                                            <span>平均薪水</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -77,8 +83,8 @@
                                             <i class="zmdi zmdi-calendar-note"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>1,086</h2>
-                                            <span>策略选股方案</span>
+                                            <h2>{{ seniority }}</h2>
+                                            <span>平均工龄</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -95,8 +101,8 @@
                                             <i class="fa fa-jpy"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>￥860,386</h2>
-                                            <span>交易总金额</span>
+                                            <h2>杭州</h2>
+                                            <span>主要分布地</span>
                                         </div>
                                     </div>
                                     <div class="overview-chart">
@@ -108,65 +114,17 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="au-card recent-report">
-                                <div class="au-card-inner">
-                                    <h3 class="title-2">数据统计</h3>
-                                    <div class="chart-info">
-                                        <div class="chart-info__left">
-                                            <div class="chart-note">
-                                                <span class="dot dot--blue"></span>
-                                                <span>价格变动</span>
-                                            </div>
-                                            <div class="chart-note mr-0">
-                                                <span class="dot dot--green"></span>
-                                                <span>成交量</span>
-                                            </div>
-                                        </div>
-                                        <div class="chart-info__right">
-                                            <div class="chart-statis">
-                                                <span class="index incre">
-                                                    <i class="zmdi zmdi-long-arrow-up"></i>25%</span>
-                                                <span class="label">成交量</span>
-                                            </div>
-                                            <div class="chart-statis mr-0">
-                                                <span class="index decre">
-                                                    <i class="zmdi zmdi-long-arrow-down"></i>10%</span>
-                                                <span class="label">总价格</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="recent-report__chart">
-                                        <canvas id="recent-rep-chart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
+                            <div id="sex_container"></div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="au-card chart-percent-card">
-                                <div class="au-card-inner">
-                                    <h3 class="title-2 tm-b-5">行情涨跌幅占比</h3>
-                                    <div class="row no-gutters">
-                                        <div class="col-xl-6">
-                                            <div class="chart-note-wrap">
-                                                <div class="chart-note mr-0 d-block">
-                                                    <span class="dot dot--blue"></span>
-                                                    <span>上涨</span>
-                                                </div>
-                                                <div class="chart-note mr-0 d-block">
-                                                    <span class="dot dot--red"></span>
-                                                    <span>下降</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <div class="percent-chart">
-                                                <canvas id="percent-chart"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <div id="work_container"></div>
                         </div>
+                    </div>
+                    <div class="row " style="margin-top: 3rem">
+                        <div class="col-lg-12">
+                            <div id="wage_container"></div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -178,5 +136,175 @@
 {% endblock content %}
 
 {% block cutsom_js %}
+    <script src="/static/js/highcharts.js"></script>
+    <script src="/static/js/highcharts-3d.js"></script>
+    <script>
+        var boy = parseFloat($('#boy_num').val());
+        var girl = parseFloat($('#girl_num').val());
+        console.log(boy, girl);
+        var chart = Highcharts.chart('sex_container', {
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45,
+                    beta: 0
+                }
+            },
+            title: {
+                text: '工程师男女比例占比'
+            },
+            colors:['#09B3EB','#FF65E5','#ffaca8','#64bcec'],
+            tooltip: {
+                pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    depth: 35,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '工程师男女比例占比',
+                data: [
+                    ['男性工程师', boy],
+                    {
+                        name: '女性工程师',
+                        y: girl,
+                        sliced: true,
+                        selected: true
+                    },
+                ]
+            }]
+        });
+    </script>
+
+    <script>
+        var work_pro_5 = parseFloat($('#work_pro_5').val());
+        var work_pro_10 = parseFloat($('#work_pro_10').val());
+        var work_pro_15 = parseFloat($('#work_pro_15').val());
+        console.log(work_pro_5);
+        console.log(work_pro_10);
+        console.log(work_pro_15);
+
+        var chart = Highcharts.chart('work_container', {
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45,
+                    beta: 0
+                }
+            },
+            title: {
+                text: '工程师工龄比例占比饼状图'
+            },
+            colors:['#FF8314','#13E835','#1CEBDB','#EB1FFF'],
+            tooltip: {
+                pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    depth: 35,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '工程师工龄比例占比饼状图',
+                data: [
+                    ['工龄 < 5', work_pro_5],
+                    ['工龄 5~10 ', work_pro_10],
+                    {
+                        name: '工龄 > 15',
+                        y: work_pro_15,
+                        sliced: true,
+                        selected: true
+                    },
+                ]
+            }]
+        });
+    </script>
+
+    <script>
+    var datas = {{ all_datas }};
+    console.log(datas);
+    var chart = Highcharts.chart('wage_container', {
+            chart: {
+                type: 'scatter',
+                zoomType: 'xy'
+            },
+            title: {
+                text: '工程师工龄和工资的分布图'
+            },
+            subtitle: {
+                text: '工龄与工资的分布'
+            },
+            xAxis: {
+                title: {
+                    enabled: true,
+                    text: '工龄 (年)'
+                },
+                startOnTick: true,
+                endOnTick: true,
+                showLastLabel: true
+            },
+            yAxis: {
+                title: {
+                    text: '工资 (元)'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 100,
+                y: 70,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+                borderWidth: 1
+            },
+            plotOptions: {
+                scatter: {
+                    marker: {
+                        radius: 5,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{series.name}</b><br>',
+                        pointFormat: '{point.x} 年, {point.y} 元'
+                    }
+                }
+            },
+            series: [{
+                name: '工程师',
+                color: 'rgba(240, 59, 29, .4)',
+                data: datas
+            }]
+        });
+    </script>
 {% endblock cutsom_js %}
 

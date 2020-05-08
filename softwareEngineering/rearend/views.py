@@ -3,13 +3,55 @@ from django.http import JsonResponse
 import json
 from .models import Engineer
 from datetime import datetime
-from django.db.models import Q
+from django.db.models import Q, Avg
 
 # Create your views here.
 def index(request):
     cateId = 1
+    boy_num = Engineer.objects.filter(sex=1).count()
+    girl_num = Engineer.objects.filter(sex=0).count()
+    all_num = Engineer.objects.filter().count()
+
+    avg_seniority = Engineer.objects.aggregate(Avg('seniority'))['seniority__avg']
+    avg_basic_wage = Engineer.objects.aggregate(Avg('basic_wage'))['basic_wage__avg']
+    print(avg_seniority, type(avg_seniority))
+    print(boy_num, girl_num)
+    boy_proportion = boy_num / (boy_num + girl_num)
+    girl_proportion = girl_num / (boy_num + girl_num)
+    sex_pie = {
+        'boy': boy_proportion,
+        'girl': girl_proportion
+    }
+
+    work_time_5 = Engineer.objects.filter(seniority__lte=5).count()
+    work_time_10 = Engineer.objects.filter(Q(seniority__gt=5) & Q(seniority__lte=10)).count()
+    work_time_15 = Engineer.objects.filter(seniority__gt=10).count()
+
+    print(work_time_5, work_time_10, work_time_15)
+    work_pro_5 = work_time_5 / all_num
+    work_pro_10 = work_time_10 / all_num
+    work_pro_15 = work_time_15 / all_num
+    print(work_pro_5, work_pro_10, work_pro_15)
+
+    work_pie = {
+        'work_pro_5': work_pro_5,
+        'work_pro_10': work_pro_10,
+        'work_pro_15': work_pro_15,
+    }
+
+    wage_datas = Engineer.objects.all().values('seniority', 'basic_wage')
+    all_datas = []
+    for data in wage_datas:
+        all_datas.append([data['seniority'], data['basic_wage']])
+    print(wage_datas)
     context = {
-        'cateId': cateId
+        'cateId': cateId,
+        'sex_pie': sex_pie,
+        'work_pie': work_pie,
+        'basic_wage': avg_basic_wage,
+        'seniority': avg_seniority,
+        'all_num': all_num,
+        'all_datas': all_datas
     }
     return render(request, 'index.html', context=context)
 
@@ -44,6 +86,68 @@ def sort(request):
         datas = datas.order_by('seniority')
 
     datas = datas.values()
+    all_num = len(datas)
+    datas = datas[(now_page-1) * 8: now_page * 8]
+
+    for key, data in enumerate(datas):
+        datas[key]['birth_date'] = datas[key]['birth_date'].strftime("%Y-%m-%d")
+    all_years = list(range(1, 51))
+
+    sort = {
+        'sex_sort': sex_sort,
+        'education_sort': education_sort,
+        'seniority_sort': seniority_sort,
+        'basic_wage_sort': basic_wage_sort,
+    }
+    context = {
+        'cateId': cateId,
+        'datas': datas,
+        'all_years': all_years,
+        'num': all_num,
+        'sort': sort,
+        'is_sort': 1,
+        'now_page': now_page
+    }
+    return render(request, 'workerList.html', context=context)
+
+def sort_other(request):
+    now_page = int(request.GET.get('page', '1'))
+    sex_sort = int(request.GET.get('sex_sort', '-1'))
+    education_sort = int(request.GET.get('education_sort', '-1'))
+    basic_wage_sort = int(request.GET.get('basic_wage_sort', '-1'))
+    seniority_sort = int(request.GET.get('seniority_sort', '-1'))
+    print(sex_sort, education_sort, basic_wage_sort, seniority_sort)
+
+
+    cateId = 2
+    test = Engineer.objects.filter().order_by('basic_wage').values()
+    for te in test:
+        print(te)
+    datas = Engineer.objects.filter()
+    if sex_sort != -1 and sex_sort != -2:
+        print('232323')
+        if education_sort != -1 and education_sort != -2:
+            datas = Engineer.objects.filter(Q(education=education_sort) & Q(sex=sex_sort))
+        else:
+            datas = Engineer.objects.filter(sex=sex_sort)
+    else:
+        if education_sort != -1 and education_sort != -2:
+            datas = Engineer.objects.filter(education=education_sort)
+
+    if basic_wage_sort == 0:
+        print('111')
+        datas = datas.order_by('-basic_wage')
+    else:
+        datas = datas.order_by('basic_wage')
+
+    if seniority_sort == 0:
+        datas = datas.order_by('-seniority')
+    else:
+        datas = datas.order_by('seniority')
+
+    datas = datas.values()
+    for data in datas:
+        print(data)
     all_num = len(datas)
     datas = datas[(now_page-1) * 8: now_page * 8]
 

@@ -31,4 +31,5 @@ urlpatterns = [
     path('add_message', views.add_message),
     path('select_message', views.select_message),
     path('sort', views.sort),
+    path('sort_other', views.sort_other),
 ]

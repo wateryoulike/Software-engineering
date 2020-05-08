@@ -46,7 +46,11 @@ myPagination.prototype = {
                     console.log(this.innerHTML);
                     var page = this.innerHTML;
                     if($('#is_sort').val() == 1){
-                        window.location.href = '/sort?page=' + page;
+                        var sex_sort = $('#sex_sort').val();
+                    var education_sort = $('#education_sort').val();
+                    var basic_wage_sort = $('#basic_wage_sort').val();
+                    var seniority_sort = $('#seniority_sort').val();
+                    window.location.href = '/sort_other?page=' + page + '&sex_sort=' + sex_sort + '&education_sort=' + education_sort + '&basic_wage_sort=' + basic_wage_sort + '&seniority=' + seniority_sort;
                     }
                     else{
                         window.location.href = '/workerList?page=' + page;
@@ -84,7 +88,11 @@ myPagination.prototype = {
             that.init();
 
             if($('#is_sort').val() == 1){
-                window.location.href = '/sort?page=' + 1;
+                var sex_sort = $('#sex_sort').val();
+                    var education_sort = $('#education_sort').val();
+                    var basic_wage_sort = $('#basic_wage_sort').val();
+                    var seniority_sort = $('#seniority_sort').val();
+                    window.location.href = '/sort_other?page=1' + '&sex_sort=' + sex_sort + '&education_sort=' + education_sort + '&basic_wage_sort=' + basic_wage_sort + '&seniority=' + seniority_sort;
             }
             else{
                 window.location.href = '/workerList?page=' + 1;
@@ -104,7 +112,11 @@ myPagination.prototype = {
                 that.getPage(that.curPage);
                 var page = that.curPage;
                 if($('#is_sort').val() == 1){
-                    window.location.href = '/sort?page=' + page;
+                    var sex_sort = $('#sex_sort').val();
+                    var education_sort = $('#education_sort').val();
+                    var basic_wage_sort = $('#basic_wage_sort').val();
+                    var seniority_sort = $('#seniority_sort').val();
+                    window.location.href = '/sort_other?page=' + page + '&sex_sort=' + sex_sort + '&education_sort=' + education_sort + '&basic_wage_sort=' + basic_wage_sort + '&seniority=' + seniority_sort;
                 }
                 else{
                     window.location.href = '/workerList?page=' + page;
@@ -162,7 +174,11 @@ myPagination.prototype = {
                 var is_sort = $('#is_sort').val();
                 console.log(is_sort);
                 if(is_sort == 1){
-                    window.location.href = '/sort?page=' + page;
+                    var sex_sort = $('#sex_sort').val();
+                    var education_sort = $('#education_sort').val();
+                    var basic_wage_sort = $('#basic_wage_sort').val();
+                    var seniority_sort = $('#seniority_sort').val();
+                    window.location.href = '/sort_other?page=' + page + '&sex_sort=' + sex_sort + '&education_sort=' + education_sort + '&basic_wage_sort=' + basic_wage_sort + '&seniority=' + seniority_sort;
                 }
                 else{
                     window.location.href = '/workerList?page=' + page;
@@ -190,7 +206,11 @@ myPagination.prototype = {
             console.log(val);
             var page = val;
             if($('#is_sort').val() == 1){
-                window.location.href = '/sort?page=' + page;
+                var sex_sort = $('#sex_sort').val();
+                    var education_sort = $('#education_sort').val();
+                    var basic_wage_sort = $('#basic_wage_sort').val();
+                    var seniority_sort = $('#seniority_sort').val();
+                    window.location.href = '/sort_other?page=' + page + '&sex_sort=' + sex_sort + '&education_sort=' + education_sort + '&basic_wage_sort=' + basic_wage_sort + '&seniority=' + seniority_sort;
             }
             else{
                 window.location.href = '/workerList?page=' + page;

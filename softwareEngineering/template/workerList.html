@@ -40,6 +40,10 @@
                                         {% if searchResult == 0 %}
                                             <h3 class="title-3 ">搜索含有字段 &nbsp;&nbsp;'<span style="color: red; font-size: 110%">{{ searchContent }}</span>'&nbsp;&nbsp; 的工程师名字或者编号结果为</h3>
                                         {% else %}
+                                            <input type="hidden" id="sex_sort" value="{{ sort.sex_sort }}">
+                                            <input type="hidden" id="education_sort" value="{{ sort.education_sort}}">
+                                            <input type="hidden" id="basic_wage_sort" value="{{ sort.basic_wage_sort }}">
+                                            <input type="hidden" id="seniority_sort" value="{{ sort.seniority_sort }}">
                                             <div class="rs-select2--dark rs-select2--sm rs-select2--border">
                                                 <select name="sex_sort" class="js-select2 au-select-dark" id="p_change">
                                                     <option disabled value="-1" {% if sort.sex_sort == -1 %}selected="selected"{% endif %}>性别</option>
