@@ -24,6 +24,7 @@ urlpatterns = [
     path('calculation/', views.calculation),
     path('hand_calculation/', views.hand_calculation),
     path('login/', views.login),
+    path('loginOut/', views.loginOut),
     path('handLogin', views.handLogin),
     path('engineer_detail', views.engineer_detail),
     path('update_message', views.update_message),
@@ -32,4 +33,6 @@ urlpatterns = [
     path('select_message', views.select_message),
     path('sort', views.sort),
     path('sort_other', views.sort_other),
+    path('delete_recover', views.delete_restore),
+    path('recover_data', views.recover_data),
 ]

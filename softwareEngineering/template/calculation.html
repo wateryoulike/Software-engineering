@@ -3,6 +3,7 @@
 {% block custom_css %}
 
     <!-- Fontfaces CSS-->
+    <link href="/static/css/myPagination.css" rel="stylesheet" media="all">
 
 {% endblock custom_css %}
 
@@ -39,40 +40,54 @@
                                         <thead>
                                             <tr>
                                                 <td style="font-size: 120%; width: 10%">编号</td>
-                                                <td style="font-size: 120%; width: 15%">操作时间</td>
-                                                <td style="font-size: 120%; width: 10%">操作人员</td>
-                                                <td style="font-size: 120%; width: 50%">操作内容</td>
+                                                <td style="font-size: 120%; width: 18%">操作时间</td>
+                                                <td style="font-size: 120%; width: 12%">操作人员</td>
+                                                <td style="font-size: 120%; width: 30%">操作内容</td>
+                                                <td style="font-size: 120%; width: 15%">操作类型</td>
                                                 <td style="font-size: 120%; width: 15%">更多</td>
                                             </tr>
                                         </thead>
                                         <tbody id="content">
-
+                                        {% for data in datas %}
                                             <tr>
-                                                <input type="hidden" value="{{ data.id }}">
+                                                <input name="id" type="hidden" value="{{ data.id }}">
                                                 <td>
                                                     <div class="table-data__info">
-                                                        <h6 style="font-size: 110%; padding-left: 1em; {% if forloop.counter < 4 %}color: #ff9607;{% endif %} font-weight: 600">{{ forloop.counter }}1</h6>
+                                                        <h6 style="font-size: 110%; padding-left: 1em; {% if forloop.counter < 4 %}color: #ff9607;{% endif %} font-weight: 600">{{ forloop.counter }}</h6>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table-data__info">
-                                                        <h6>2020-05-08 22:28</h6>
+                                                        <h6>{{ data.time }}</h6>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table-data__info">
-                                                        <h6>管理员</h6>
+                                                        <h6>{{ data.name }}</h6>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table-data__info">
-                                                        <h6>增加数据（ID：1, name:uie, number: 23230293）</h6>
+                                                        <h6>{{ data.description }}</h6>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="table-data__info">
+                                                        <h6>
+                                                            {% if data.type == 2 %}
+                                                                <span class="role admin" style="background-color: #fa4251bb; ">删除操作</span>
+                                                            {% elif data.type == 3 %}
+                                                                <span class="role user" style="background-color: #00b5e9cc; ">修改操作</span>
+                                                            {% elif data.type == 1 %}
+                                                                <span class="role member" style="background-color: #57b846cc; ">增加操作</span>
+                                                            {% endif %}
+                                                        </h6>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="table-data__info">
                                                         <input name="ID" type="hidden" value="{{ data.id }}">
-                                                        <button name="edit" class="btn btn-success" data-toggle="modal" data-target="#staticRefresh">
+                                                        <button name="restore" class="btn btn-success" data-toggle="modal" data-target="#staticRefresh">
                                                             <i class="fa fa-refresh"></i>
                                                         </button>
                                                         <button name="delete" class="btn btn-danger" data-toggle="modal" data-target="#staticDelete">
@@ -81,10 +96,11 @@
                                                     </div>
                                                 </td>
                                             </tr>
-
+                                        {% endfor %}
                                         </tbody>
                                     </table>
                                     <input type="hidden" id="num" value="{{ num }}">
+                                    <input type="hidden" id="now_page" value="{{ now_page }}">
                                     <div id="pagination" class="pagination"></div>
                                 </div>
                             </div>
@@ -110,9 +126,9 @@
                                 如果点击确定将会恢复这条已经进行过的操作
                             </p>
                         </div>
-                        <form action="/delete_message" method="post">
+                        <form action="/recover_data" method="post">
                             <div class="modal-footer">
-                                <input id="delete_id" type="hidden" name="delete_id" value="">
+                                <input id="restore_id" type="hidden" name="restore_id" value="">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                                 <button type="submit" class="btn btn-primary">确定</button>
                             </div>
@@ -137,7 +153,7 @@
                                 如果删除将会永远不能恢复这条操作
                             </p>
                         </div>
-                        <form action="/delete_message" method="post">
+                        <form action="/delete_recover" method="post">
                             <div class="modal-footer">
                                 <input id="delete_id" type="hidden" name="delete_id" value="">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
@@ -156,4 +172,44 @@
 {% endblock content %}
 
 {% block cutsom_js %}
+    <script src="/static/js/myPagination_cal.js"></script>
+    <script>
+        $('#content tr td:last-child').each(function () {
+            console.log($(this).children('div').children('button[name="delete"]'));
+            $(this).children('div').children('button[name="delete"]').bind('click', function () {
+                console.log('hello');
+                console.log($(this).parent().children('input').val());
+                var ID = $(this).parent().children('input').val();
+                $('#delete_id').val(ID);
+            })
+        });
+
+        $('#content tr td:last-child').each(function () {
+            console.log($(this).children('div').children('button[name="restore"]'));
+            $(this).children('div').children('button[name="restore"]').bind('click', function () {
+                console.log('hello');
+                console.log($(this).parent().children('input').val());
+                var ID = $(this).parent().children('input').val();
+                $('#restore_id').val(ID);
+            })
+        });
+
+        var num = $('#num').val();
+	    console.log(num);
+	    var now_page = $('#now_page').val();
+	    new myPagination({
+	        id: 'pagination',
+	        curPage: now_page, //初始页码
+	        pageTotal: Math.ceil(num/8), //总页数
+			pageAmount: 8,  //每页多少条
+	        dataTotal: num, //总共多少条数据
+			pageSize: 5, //可选,分页个数
+	        showPageTotalFlag:true, //是否显示数据统计
+	        showSkipInputFlag:false, //是否支持跳转
+	        getPage: function (page) {
+	            //获取当前页数
+	            console.log(page);
+	        }
+	    });
+    </script>
 {% endblock cutsom_js %}
